@@ -156,11 +156,10 @@
                 });
                 return htmlIssues;
             };
-    
-            jQuery(document).ready(function() {
-
+            
+            function githubMilestons(githubRepo, divId) {
                 // Query open milestone
-                $.getJSON('https://api.github.com/repos/ALPSCore/ALPSCore/milestones', function(data) {
+                $.getJSON('https://api.github.com/repos/' + githubRepo + '/milestones', function(data) {
 
                     $.each(data, function(key, val) {
                         var tableTemplate = '<div class="panel panel-primary">\
@@ -182,11 +181,11 @@
                                 </tbody>\
                             </table>\
                         </div>'
-                        $(tableTemplate).prependTo('#milestones');
+                        $(tableTemplate).prependTo(divId);
 
                         var d = new Date(val.due_on);
                         // Add title with current milestone
-                        $('<h3 class="panel-title">Current milestone: <a href="https://github.com/ALPSCore/ALPSCore/issues?milestone=' + val.number + '">' + val.title + '</a></h3>')
+                        $('<h3 class="panel-title">Current milestone: <a href="https://github.com/' + githubRepo + '/issues?milestone=' + val.number + '">' + val.title + '</a></h3>')
                                 .appendTo('#milestone_title_' + val.number);
                         $(
                                 '<p>' + val.open_issues + ' open issues - ' +
@@ -195,19 +194,24 @@
 
 
                         // Query the closed issues of the current milestone
-                        $.getJSON('https://api.github.com/repos/ALPSCore/ALPSCore/issues?state=closed&milestone=' + val.number, function(data) {
+                        $.getJSON('https://api.github.com/repos/' + githubRepo + '/issues?state=closed&milestone=' + val.number, function(data) {
                             var issues = formatIssues(data);
                             $(issues.join('')).appendTo('#milestone_issues_' + val.number);
                         });
 
                         // Query the open issues of the current milestone
-                        $.getJSON('https://api.github.com/repos/ALPSCore/ALPSCore/issues?milestone=' + val.number, function(data) {
+                        $.getJSON('https://api.github.com/repos/' + githubRepo + '/issues?milestone=' + val.number, function(data) {
                             var issues = formatIssues(data);
                             $(issues.join('')).appendTo('#milestone_issues_' + val.number);
                         });
                     });
 
                 });
+            }
+    
+            jQuery(document).ready(function() {
+
+                githubMilestons('ALPSCore/ALPSCore', '#milestones');
 
                 // Query the ongoing projects
                 $.getJSON('https://api.github.com/repos/ALPSCore/ALPSCore/issues?labels=ongoing', function(data) {
