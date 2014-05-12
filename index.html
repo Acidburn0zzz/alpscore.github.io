@@ -90,23 +90,6 @@
             <div class="row">
                 <!-- Dashboard (issues) -->
                 <div id="milestones" class="col-lg-8">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Ongoing projects</h3>
-                        </div>
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Task name</th>
-                                    <th>Assignee</th>
-                                    <th>Priority</th>
-                                    <th>State</th>
-                                </tr>
-                            </thead>
-                            <tbody id="project_issues">
-                            </tbody>
-                        </table>
-                    </div>
                 </div>
                 <!-- Build status -->
                 <div class="col-sm-4">
@@ -208,16 +191,38 @@
 
                 });
             }
+            
+            function githubIssueLabel(githubRepo, title, label, divId) {
+                var tableTemplate = '<div class="panel panel-primary">\
+                    <div id="issues_title_' + label + '" class="panel-heading">\
+                        <h3 class="panel-title">' + title + '</h3>\
+                    </div>\
+                    <table class="table table-striped">\
+                        <thead>\
+                            <tr>\
+                                <th>Task name</th>\
+                                <th>Assignee</th>\
+                                <th>Priority</th>\
+                                <th>State</th>\
+                            </tr>\
+                        </thead>\
+                        <tbody id="issues_list_' + label + '">\
+                        </tbody>\
+                    </table>\
+                </div>'
+                $(tableTemplate).appendTo(divId);
+                
+                // Query the ongoing projects
+                $.getJSON('https://api.github.com/repos/' + githubRepo + '/issues?labels=' + label, function(data) {
+                    var issues = formatIssues(data);
+                    $(issues.join('')).appendTo('#issues_list_' + label);
+                });
+            }
     
             jQuery(document).ready(function() {
 
                 githubMilestones('ALPSCore/ALPSCore', '#milestones');
-
-                // Query the ongoing projects
-                $.getJSON('https://api.github.com/repos/ALPSCore/ALPSCore/issues?labels=ongoing', function(data) {
-                    var issues = formatIssues(data);
-                    $(issues.join('')).appendTo('#project_issues');
-                });
+                githubIssueLabel('ALPSCore/ALPSCore', 'Ongoing projects', 'ongoing', '#milestones')
 
                 // Query the Jenkins jobs
                 $.getJSON('https://alpscore.ci.cloudbees.com/view/ALPSCore/api/json?jsonp=?', function(data) {
