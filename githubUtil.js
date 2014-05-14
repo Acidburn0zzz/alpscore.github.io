@@ -43,14 +43,20 @@ function githubMilestones(githubRepo, divId) {
             </div>'
             $(tableTemplate).prependTo(divId);
 
-            var d = new Date(val.due_on);
+            var due;
+            if (val.due_on === null) {
+                due = "no due date set"
+            } else {
+                var d = new Date(val.due_on);
+                due = "due on: " + d.toString();
+            }
             // Add title with current milestone
             $('<h3 class="panel-title">Milestone: <a href="https://github.com/' + githubRepo + '/issues?milestone=' + val.number + '">' + val.title + '</a></h3>')
                     .appendTo('#milestone_title_' + val.number);
             $(
                     '<p>' + val.open_issues + ' open issues - ' +
-                    ' ' + val.closed_issues + ' closed issues - ' +
-                    'due on: ' + d.toString() + '</p>').appendTo('#milestone_' + val.number);
+                    ' ' + val.closed_issues + ' closed issues - ' + due +
+                    '</p>').appendTo('#milestone_' + val.number);
 
 
             // Query the closed issues of the current milestone
