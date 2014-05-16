@@ -17,6 +17,9 @@ function formatIssues(jsonIssues) {
     return htmlIssues;
 };
 
+// Creates a new panel with the list of both open and closed issues for
+// each open milestone. It adds one <div> for each milestone under the
+// HTML elements with id=<divId>
 function githubMilestones(githubRepo, divId) {
     // Query open milestone
     $.getJSON('https://api.github.com/repos/' + githubRepo + '/milestones', function(data) {
@@ -75,6 +78,10 @@ function githubMilestones(githubRepo, divId) {
     });
 }
 
+// Creates a new panel with the list of both open issues tagged
+// with the given label. The panel will have the title provided.
+// It adds one <div> with the panel under the
+// HTML elements with id=<divId>
 function githubIssueLabel(githubRepo, title, label, divId) {
     var tableTemplate = '<div class="panel panel-primary">\
         <div id="issues_title_' + label + '" class="panel-heading">\
