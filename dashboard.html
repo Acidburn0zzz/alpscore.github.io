@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <!--<link rel="shortcut icon" href="http://getbootstrap.com/assets/ico/favicon.ico">-->
+
+        <title>ALPSCore: Applications and Libraries for Physics Simulations</title>
+
+        <!-- Color scheme from lavish bootstrap -->
+        <link href="js/libs/twitter-bootstrap/css/bootstrap.css" rel="stylesheet">
+        
+        <!-- Custom styles for this template -->
+        <link href="stylesheet.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+          <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+
+    <body>
+        <!-- Google tracking script-->
+        <!-- ============== -->
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-51838233-1', 'alpscore.org');
+          ga('send', 'pageview');
+        </script>
+        <!-- Navigation bar -->
+        <!-- ============== -->
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#"><b>ALPSCore</b>: Applications and Libraries for Physics Simulations</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="#">Home</a></li>
+                        <li><a href="https://github.com/ALPSCore/"><!--<image src="images/GitHub-Mark-Light-32px.png">-->GitHub</a></li>
+                        <li><a href="https://github.com/ALPSCore/ALPSCore/issues?state=open">Issues</a></li>
+                        <li><a href="https://github.com/ALPSCore/ALPSCore/wiki">Wiki</a></li>
+                        <li><a href="https://alpscore.ci.cloudbees.com/job/alpscore_fedora17_doc-only/ALPSCore_reference/">Doxygen</a></li>
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+        </div>
+
+        <!-- Banner -->
+        <!-- ====== -->
+        <div class="jumbotron">
+            <div class="container">
+                <h1>ALPSCore</h1>
+                <h2>Part of the <a href=http://alps.comp-phys.org>Applications and Libraries for Physics Simulations</a></h2>
+                <!--<p>TODO: add blurb.</p>-->
+                <!--<p><a class="btn btn-primary btn-lg" role="button">Learn more &raquo;</a></p>-->
+            </div>
+        </div>
+
+        <!-- Content -->
+        <!-- ======= -->
+        <div class="container">
+            <!-- Example with 3 sections -->
+            <!--
+            <div class="row">
+                <div class="col-md-4">
+                    <h2>Section 1</h2>
+                    <p>Provides .... </p>
+                    <p><a class="btn btn-primary" href="http://google.com" role="button">Google</a></p>
+                </div>
+                <div class="col-md-4">
+                    <h2>Section 2</h2>
+                    <p>Provides .... </p>
+                    <p><a class="btn btn-primary" href="http://google.com" role="button">Google</a></p>
+                </div>
+                    <h2>Section 3</h2>
+                    <p>Provides .... </p>
+                    <p><a class="btn btn-primary" href="http://google.com" role="button">Google</a></p>
+                </div>
+            </div>-->
+
+
+            <!-- Gathered information -->
+            <div class="page-header">
+                <h1>Dashboard</h1>
+            </div>
+            <div class="row">
+                <!-- Dashboard (issues) -->
+                <div id="milestones" class="col-lg-8">
+                </div>
+                <!-- Build status -->
+                <div class="col-sm-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"><a href="https://alpscore.ci.cloudbees.com/view/ALPSCore/">Build Status</a></h3>
+                        </div>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Build name</th>
+                                </tr>
+                            </thead>
+                            <tbody id="build_tasks">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="js/libs/jquery/jquery.js"></script>
+        <script src="js/libs/twitter-bootstrap/js/bootstrap.js"></script>
+        <script src="githubUtil.js"></script>
+
+        <script type="text/javascript">
+            jQuery(document).ready(function() {
+
+                githubMilestones('ALPSCore/ALPSCore', '#milestones');
+                githubIssueLabel('ALPSCore/ALPSCore', 'Ongoing projects', 'ongoing', '#milestones')
+
+                // Query the Jenkins jobs
+                $.getJSON('https://alpscore.ci.cloudbees.com/view/ALPSCore/api/json?jsonp=?', function(data) {
+                    var items = [];
+
+                    $.each(data.jobs, function(key, val) {
+                        var s = '<tr>';
+                        switch (val.color) {
+                            case "blue":
+                            case "blue_anime":
+                                s = s + '<td><span class="glyphicon glyphicon-ok"></span></td>';
+                                break;
+                            case "yellow":
+                            case "yellow_anime":
+                                s = s + '<td><span class="glyphicon glyphicon-flash"></span></td>';
+                                break;
+                            default:
+                                s = s + '<td><span class="glyphicon glyphicon-remove"></span></td>';
+                                break
+                        }
+                        items.push(s + '"<td><a href="' + val.url + '">  ' + val.name + '</td>' +
+                                '</tr>');
+                    });
+
+                    $(items.join('')).appendTo('#build_tasks');
+                });
+            });
+        </script>
+    </body>
+</html>
