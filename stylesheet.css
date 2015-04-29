@@ -1,6 +1,35 @@
 body {
   padding-top: 50px;
+  font-size: 18px;
 }
+
+.featurette {
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+
+.gray {
+    background-color: #eeeeee;
+}
+
+.featurette h1 {
+   font-size: 64px;
+   text-align: center;
+}
+
+.featurette h2 {
+   text-align: center;
+}
+
+.featurette .buttons {
+   margin-top: 50px;
+}
+
+.featurette .btn {
+   width: 100%;
+   font-size: 24px;
+}
+
 .starter-template {
   padding: 40px 15px;
   text-align: center;
